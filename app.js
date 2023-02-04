@@ -1,9 +1,19 @@
 const http = require('http');
 
-const routes = require('./routes');
+const express = require('express');
 
-// console.log(routes.someText)
+const app = express();
 
-const server = http.createServer(routes.handler);
+app.use((request, response, next) =>{
+    console.log('in the first middleware', request.originalUrl) // browser requesting favicon
+    next();
+});
+
+app.use((request, response, next) =>{
+    console.log('in the second middleware')
+    response.send('<h1>Hello NodeJS</h1>');
+})
+
+const server = http.createServer(app);
 
 server.listen(3000);
